@@ -69,24 +69,18 @@ const Chat = () => {
     if (msg === "") {
       toast("Enter a message.", {
         duration: 4000,
-        // Styling
         style: {},
         className: "",
-        // Custom Icon
         icon: "⚠️",
-        // Aria
         role: "status",
         ariaLive: "polite",
       });
     } else if (toUser === nickname) {
       toast("Select a different user.", {
         duration: 4000,
-        // Styling
         style: {},
         className: "",
-        // Custom Icon
         icon: "⚠️",
-        // Aria
         role: "status",
         ariaLive: "polite",
       });
@@ -113,7 +107,6 @@ const Chat = () => {
     <div className="flex w-screen main-chat lg:h-screen bg-gray-900 divide-solid">
       <Toaster />
       <div className="flex w-full lg:w-5/6 lg:h-5/6 lg:mx-auto lg:my-auto shadow-md">
-        {/* Users online */}
         <div className="hidden lg:block pl-4 pr-4 w-64 bg-purple-900 text-white">
           <p className="font-black my-4 text-xl">
             {" "}
@@ -134,7 +127,6 @@ const Chat = () => {
           </ul>
         </div>
         <div className="flex flex-col flex-grow lg:max-w-full bg-purple-50">
-          {/* Messages */}
           <p className="font-black mt-4 mb-2 pl-4 lg:pl-8 text-2xl">
             Main Chat
           </p>

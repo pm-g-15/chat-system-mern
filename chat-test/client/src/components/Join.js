@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { default as socket } from "./ws";
+import { default as socket } from "../socket/ws";
 
 const Join = () => {
   const [nickname, setNickname] = useState();

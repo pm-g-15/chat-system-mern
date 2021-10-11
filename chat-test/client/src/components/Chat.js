@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams, useHistory } from "react-router-dom";
-import { default as socket } from "./ws";
+import { default as socket } from "../socket/ws";
 import UserOnline from "./UserOnline";
 
 const Chat = () => {
@@ -128,7 +128,7 @@ const Chat = () => {
         </div>
         <div className="flex flex-col flex-grow lg:max-w-full bg-purple-50">
           <p className="font-black mt-4 mb-2 pl-4 lg:pl-8 text-2xl">
-            Main Chat
+            Chat Stream
           </p>
           <div
             id="msg"

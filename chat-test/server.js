@@ -18,6 +18,7 @@ io.on("connection", (socket) => {
   let { id } = socket.client;
 
   socket.on("user nickname", (nickname) => {
+    console.log(nickname, "++++++++++++++++++++++++++++++");
     //  1) When the CLIENT sends the 'nickname', we store the 'nickname',
     //  'socket.client.id', and 'socket.id in a Map structure
     usersConnected.set(nickname, [socket.client.id, socket.id]);

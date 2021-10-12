@@ -6,11 +6,13 @@ import "../scss/app.scss";
 
 const Join = () => {
   const [nickname, setNickname] = useState();
+  console.log(nickname, "nicknamenicknamenickname");
   const history = useHistory();
   const handleOnClick = () => history.push(`/chat/${nickname}`);
 
   useEffect(() => {
     localStorage.setItem("chatConnected", "true");
+    localStorage.setItem("nickname", nickname);
   }, []);
 
   const submitNickname = () => {
@@ -20,7 +22,7 @@ const Join = () => {
   return (
     <div className="chat_wrapper">
       <div className="chat_inner">
-        <h1 className="abc">Chat App 🦜</h1>
+        <h1 className="abc">Chat Stream</h1>
         <form className="form_inner">
           <div className="relative ">
             <input

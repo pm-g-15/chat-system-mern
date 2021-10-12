@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { useParams, useHistory } from "react-router-dom";
 import { default as socket } from "../socket/ws";
@@ -15,7 +15,8 @@ const Chat = () => {
   const [usersOnline, setUsersOnline] = useState([]);
   const [toUser, setToUser] = useState("");
   const history = useHistory();
-
+  const fileinput = useRef("");
+  console.log(image, "image");
   useEffect(() => {
     if (!localStorage.getItem("chatConnected")) {
       history.push(`/`);
@@ -58,8 +59,7 @@ const Chat = () => {
 
     socket.on("img", (e) => {
       console.log(e);
-
-      socket.emit("newImg");
+      socket.emit([...image, "newImg"]);
     });
 
     socket.on("user-disconnected", (user) => {
@@ -72,7 +72,7 @@ const Chat = () => {
       socket.off();
     };
   }, [chat]);
-
+  // const handleChange=()
   const submitMsg = (e) => {
     e.preventDefault();
 
@@ -102,10 +102,6 @@ const Chat = () => {
       setChat([...chat, `🔒 Private Message for ${toUser}: ${msg}`]);
       setMsg("");
       setToUser("");
-    } else if (image) {
-      socket.emit("img", { nickname, msg });
-      setImage([...chat, { nickname, msg }]);
-      setMsg("");
     } else {
       socket.emit("chat message", { nickname, msg });
       setChat([...chat, { nickname, msg }]);
@@ -208,16 +204,22 @@ const Chat = () => {
                   value={msg}
                 />
               </div>
-              <div className="hidden lg:block ">
-                <input
-                  type="file"
-                  className="ml-8 flex-shrink-0 bg-green-400 text-gray-700 text-base font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2"
-                  onChange={(e) => setImage(e.target.files[0])}
-                ></input>
+              <button
+                className="ml-8 flex-shrink-0 bg-green-400 text-gray-700 text-base font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2"
+                onClick={(e) => fileinput.current.click()}
+              >
                 <img
                   src={AttachmentImage}
                   style={{ width: "23px", height: "27px" }}
                 />
+              </button>
+              <div className="hidden lg:block ">
+                <input
+                  ref={fileinput}
+                  type="file"
+                  className="hidden"
+                  onChange={(e) => setImage(e.target.files[0])}
+                ></input>
               </div>
               <div className="hidden lg:block ">
                 <button

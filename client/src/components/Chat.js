@@ -58,7 +58,8 @@ const Chat = () => {
 
     socket.on("img", (e) => {
       console.log(e);
-      socket.emit("newImg", { image: true, buffer: buf.toString("base64") });
+
+      socket.emit("newImg");
     });
 
     socket.on("user-disconnected", (user) => {

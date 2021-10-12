@@ -59,7 +59,6 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     let tempUserNickname;
-
     for (let key of usersConnected.keys()) {
       if (usersConnected.get(key)[0] === id) {
         tempUserNickname = key;

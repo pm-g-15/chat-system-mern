@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { default as socket } from "../socket/ws";
+
 import "../scss/app.scss";
 
 const Join = () => {

@@ -3,10 +3,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { useParams, useHistory } from "react-router-dom";
 import { default as socket } from "../socket/ws";
 import UserOnline from "./UserOnline";
+import AttachmentImage from "../assest/attch.png";
 import "./index.scss";
 
 const Chat = () => {
   let { user_nickName } = useParams();
+  const [image, setImage] = useState(null);
   const [nickname, setNickname] = useState("");
   const [msg, setMsg] = useState("");
   const [chat, setChat] = useState([]);
@@ -44,6 +46,7 @@ const Chat = () => {
     socket.on("connect", () => {
       socket.emit("new-user");
     });
+
     socket.on("users-on", (list) => {
       setUsersOnline(list);
     });
@@ -70,7 +73,7 @@ const Chat = () => {
   const submitMsg = (e) => {
     e.preventDefault();
 
-    if (msg === "") {
+    if (msg === "" || image.length > 0) {
       toast("Enter a message.", {
         duration: 4000,
         style: {},
@@ -96,13 +99,17 @@ const Chat = () => {
       setChat([...chat, `🔒 Private Message for ${toUser}: ${msg}`]);
       setMsg("");
       setToUser("");
+    } else if (image) {
+      socket.emit("img", { nickname, msg });
+      setImage([...chat, { nickname, msg }]);
+      setMsg("");
     } else {
       socket.emit("chat message", { nickname, msg });
       setChat([...chat, { nickname, msg }]);
       setMsg("");
     }
   };
-
+  console.log(image, "+image");
   const saveUserToPrivateMsg = (userID) => {
     setToUser(userID);
   };
@@ -198,7 +205,19 @@ const Chat = () => {
                   value={msg}
                 />
               </div>
-              <div className="hidden lg:block w-1/6">
+              <div className="hidden lg:block ">
+                <input
+                  type="file"
+                  className="ml-8 flex-shrink-0 bg-green-400 text-gray-700 text-base font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2"
+                  onChange={(e) => setImage(e.target.files[0])}
+                  value={image}
+                ></input>
+                <img
+                  src={AttachmentImage}
+                  style={{ width: "23px", height: "27px" }}
+                />
+              </div>
+              <div className="hidden lg:block ">
                 <button
                   className="ml-8 flex-shrink-0 bg-green-400 text-gray-700 text-base font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2"
                   onClick={(e) => submitMsg(e)}

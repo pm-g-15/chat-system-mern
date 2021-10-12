@@ -6,13 +6,14 @@ import "../scss/app.scss";
 
 const Join = () => {
   const [nickname, setNickname] = useState();
-  console.log(nickname, "nicknamenicknamenickname");
   const history = useHistory();
-  const handleOnClick = () => history.push(`/chat/${nickname}`);
+  const handleOnClick = () => {
+    localStorage.setItem("nickname", nickname);
+    history.push(`/chat/${nickname}`);
+  };
 
   useEffect(() => {
     localStorage.setItem("chatConnected", "true");
-    localStorage.setItem("nickname", nickname);
   }, []);
 
   const submitNickname = () => {

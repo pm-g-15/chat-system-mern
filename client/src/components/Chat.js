@@ -16,6 +16,7 @@ const Chat = () => {
   const [toUser, setToUser] = useState("");
   const history = useHistory();
   const fileinput = useRef("");
+
   console.log(image, "image");
   useEffect(() => {
     if (!localStorage.getItem("chatConnected")) {
@@ -33,7 +34,7 @@ const Chat = () => {
     });
 
     socket.on("private msg", ({ id, nickname, msg }) => {
-      setChat([...chat, `🔒 Private Message from ${nickname}: ${msg}`]);
+      setChat([...chat, `Private Message from ${nickname}: ${msg}`]);
     });
 
     let objDiv = document.getElementById("msg");
@@ -74,6 +75,7 @@ const Chat = () => {
   }, [chat]);
   // const handleChange=()
   const submitMsg = (e) => {
+    console.log(e.target, "++++++++++++++");
     e.preventDefault();
 
     if (msg === "" || image?.length > 0) {
@@ -99,7 +101,7 @@ const Chat = () => {
       selectElem.selectedIndex = 0;
       socket.emit("chat message private", { toUser, nickname, msg });
       setChat([...chat, { nickname, msg }]);
-      setChat([...chat, `🔒 Private Message for ${toUser}: ${msg}`]);
+      setChat([...chat, `Private Message for ${toUser}: ${msg}`]);
       setMsg("");
       setToUser("");
     } else {
@@ -113,6 +115,10 @@ const Chat = () => {
     setToUser(userID);
   };
 
+  const handleChange = (e) => {
+    console.log(e.target);
+  };
+
   return (
     <div className="chat-screen">
       <Toaster />
@@ -120,7 +126,7 @@ const Chat = () => {
         <div className="hidden lg:block pl-4 pr-4 w-64 text-white">
           <p className="font-black my-4 text-xl">
             {" "}
-            # Active: ({usersOnline !== null ? usersOnline?.length : "0"}):
+            User online: ({usersOnline !== null ? usersOnline?.length : "0"})
           </p>
           <ul className="divide-y divide-gray-300 truncate">
             {usersOnline !== null
@@ -136,7 +142,7 @@ const Chat = () => {
               : ""}
           </ul>
         </div>
-        <div className="flex flex-col flex-grow lg:max-w-full bg-purple-50">
+        <div className="flex flex-col flex-grow lg:max-w-full bg-white">
           <p className="font-black mt-4 mb-2 pl-4 lg:pl-8 text-2xl">
             Chat Stream
           </p>
@@ -171,7 +177,7 @@ const Chat = () => {
                 onChange={(e) => saveUserToPrivateMsg(e.target.value)}
               >
                 <option value="" className="">
-                  Everyone
+                  All
                 </option>
                 {usersOnline !== null
                   ? usersOnline.map((el, index) => (
@@ -188,7 +194,7 @@ const Chat = () => {
                 <span className="rounded-l-md inline-flex items-center px-1 lg:px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                   {toUser === "" ? (
                     <p className="bg-purple-400 text-white text-xs lg:text-base font-normal rounded p-1">
-                      To: Everyone
+                      To: All
                     </p>
                   ) : (
                     <p className="bg-purple-700 text-white text-xs lg:text-base font-semibold rounded p-1 w-20 lg:w-28 truncate">
@@ -218,8 +224,8 @@ const Chat = () => {
                   ref={fileinput}
                   type="file"
                   className="hidden"
-                  onChange={(e) => setImage(e.target.files[0])}
-                ></input>
+                  onChange={handleChange}
+                />
               </div>
               <div className="hidden lg:block ">
                 <button

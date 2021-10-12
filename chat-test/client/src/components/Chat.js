@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useParams, useHistory } from "react-router-dom";
 import { default as socket } from "../socket/ws";
 import UserOnline from "./UserOnline";
+import "./index.scss";
 
 const Chat = () => {
   let { user_nickName } = useParams();
@@ -43,13 +44,16 @@ const Chat = () => {
     socket.on("connect", () => {
       socket.emit("new-user");
     });
-
     socket.on("users-on", (list) => {
       setUsersOnline(list);
     });
 
     socket.on("welcome", (user) => {
-      setChat([...chat, `Welcome to our chat ${user} 😃`]);
+      setChat([...chat, `Welcome to our chat ${user}`]);
+    });
+    socket.on("img", (e) => {
+      console.log(e);
+      socket.emit("newImg");
     });
 
     socket.on("user-disconnected", (user) => {
@@ -102,15 +106,15 @@ const Chat = () => {
   const saveUserToPrivateMsg = (userID) => {
     setToUser(userID);
   };
-
+  console.log(usersOnline, "usersOnlineusersOnlineusersOnlineusersOnline");
   return (
-    <div className="flex w-screen main-chat lg:h-screen bg-gray-900 divide-solid">
+    <div className="chat-screen">
       <Toaster />
-      <div className="flex w-full lg:w-5/6 lg:h-5/6 lg:mx-auto lg:my-auto shadow-md">
-        <div className="hidden lg:block pl-4 pr-4 w-64 bg-purple-900 text-white">
+      <div className="chat-mid-screen">
+        <div className="hidden lg:block pl-4 pr-4 w-64 text-white">
           <p className="font-black my-4 text-xl">
             {" "}
-            # Online: ({usersOnline !== null ? usersOnline.length : "0"}):
+            # Active: ({usersOnline !== null ? usersOnline?.length : "0"}):
           </p>
           <ul className="divide-y divide-gray-300 truncate">
             {usersOnline !== null
@@ -135,20 +139,22 @@ const Chat = () => {
             className="h-5/6 overflow-y-auto pl-4 lg:pl-8 pt-4 mb-2 lg:mb-0"
           >
             <ul className="w-full lg:w-96">
-              {chat.map((el, index) => (
-                <li
-                  key={index}
-                  className="w-screen break-words pr-6 lg:pr-0 lg:w-full"
-                >
-                  {el.nickname != null ? (
-                    `${el.nickname}: ${el.msg}`
-                  ) : (
-                    <p className="text-base font-semibold text-purple-900 rounded py-1">
-                      {el}
-                    </p>
-                  )}
-                </li>
-              ))}
+              {chat &&
+                chat.map((el, index) => (
+                  <li
+                    key={index}
+                    className="w-screen break-words pr-6 lg:pr-0 lg:w-full"
+                  >
+                    {console.log(chat, "++++++++++++++++++++++chat")}
+                    {el.nickname != null ? (
+                      `${el.nickname}: ${el.msg}`
+                    ) : (
+                      <p className="text-base font-semibold text-purple-900 rounded py-1">
+                        {el}
+                      </p>
+                    )}
+                  </li>
+                ))}
             </ul>
           </div>
           <form className="">

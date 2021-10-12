@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { default as socket } from "../socket/ws";
 import "../scss/app.scss";
+
 const Join = () => {
   const [nickname, setNickname] = useState();
   const history = useHistory();
@@ -25,7 +26,7 @@ const Join = () => {
               type="text"
               onChange={(e) => setNickname(e.target.value)}
               className="input_inner"
-              placeholder="Nickname"
+              placeholder="enter room name"
             />
           </div>
           <button
@@ -36,7 +37,7 @@ const Join = () => {
             }}
             type="submit"
           >
-            Join
+            Join room
           </button>
         </form>
       </div>

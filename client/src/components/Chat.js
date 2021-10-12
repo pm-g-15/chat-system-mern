@@ -76,7 +76,7 @@ const Chat = () => {
   const submitMsg = (e) => {
     e.preventDefault();
 
-    if (msg === "" || image.length > 0) {
+    if (msg === "" || image?.length > 0) {
       toast("Enter a message.", {
         duration: 4000,
         style: {},

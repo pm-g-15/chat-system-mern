@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 .main-chat {
-  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: 100vh; 
   height: calc(var(--vh, 1vh) * 100);
 }

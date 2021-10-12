@@ -48,7 +48,6 @@ io.on("connection", (socket) => {
       var myData1 = new chatSchema({ chatMessage: msg });
       myData1.save();
     }
-    console.log(nickname, msg, "++++++++++++++++++++++++++");
     socket.broadcast.emit("chat message", { nickname, msg });
   });
 
